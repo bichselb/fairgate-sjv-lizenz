@@ -2,6 +2,16 @@
 
 Downloader for SJV licenses from Fairgate.
 
+## Problem
+
+Downloading the licenses of all members of a Swiss judo club is very inconvenient.
+
+Without this tool, one needs to go over all members and download the license:
+
+![Screenshot](./Screenshot.png)
+
+This tool automates this process.
+
 ## Install
 
 We recommend to install sjv-license-downloader via
