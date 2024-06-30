@@ -22,7 +22,7 @@ from datetime import datetime
 import tempfile
 
 from tqdm import tqdm
-import PyPDF2
+import fitz  # PyMuPDF
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -123,7 +123,8 @@ class LicenseDownloader:
 
 
 def concatenate_pdfs(input_dir: str, output_pdf: str):
-    merger = PyPDF2.PdfMerger()
+    # Create a new empty PDF
+    merged_document = fitz.open()
 
     # Get list of all PDF files in the input directory
     pdf_files = [os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith('.pdf')]
@@ -131,15 +132,15 @@ def concatenate_pdfs(input_dir: str, output_pdf: str):
     # Sort PDF files by name (optional)
     pdf_files.sort()
 
-    # Append each PDF to the merger object
+    # Append each PDF to the merged_document
     for pdf_file in pdf_files:
-        merger.append(pdf_file)
+        with fitz.open(pdf_file) as document:
+            merged_document.insert_pdf(document)
 
-    # Write the merged PDF to the output file
-    with open(output_pdf, 'wb') as f:
-        merger.write(f)
+    # Save the merged and compressed PDF
+    merged_document.save(output_pdf, garbage=4, deflate=True, clean=True, deflate_images=True, deflate_fonts=True)
 
-    print(f'Merged PDF saved to: {output_pdf}')
+    print(f'Merged and compressed PDF saved to: {output_pdf}')
 
 
 def get_args():

@@ -27,7 +27,7 @@ conda activate sjv-license-downloader
 Then, you can install sjv-license-downloader:
 
 ```bash
-pip install argparse selenium PyPDF2 tqdm
+pip install argparse tqdm selenium PyMuPDF
 ```
 
 ## Run
